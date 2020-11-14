@@ -1,0 +1,27 @@
+﻿@using CalendrierAventCore.Data.Models
+@model List<Calendar>
+@{
+    ViewBag.Title = "Liste des calendriers";
+}
+
+<h2>Liste des calendriers</h2>
+
+@using (Html.BeginForm("Liste", "Calendrier", FormMethod.Post))
+{
+    <p><input name="password" type="password" title="Mot de passe" placeholder="Mot de passe" maxlength='20' size="20" required></p>
+    <p><input type="submit" value="Voir liste"></p>
+}
+
+@if (ViewBag.Message != null)
+{<p>@ViewBag.Message</p>}
+
+@if (Model != null)
+{
+    foreach (Calendar calendar in Model)
+    {
+        string privateUrl = $"/{calendar.PrivateName}";
+        string publicUrl = $"/{calendar.PublicName}";
+        <p>@calendar.Id - lien privé : <a href="@privateUrl" target="_blank">@calendar.PrivateName</a> - lien public : <a href="@publicUrl" target="_blank">@calendar.PublicName</a></p>
+
+    }
+}

@@ -1,0 +1,43 @@
+﻿@using CalendrierAventCore.Data.ViewModels
+@model CalendarViewModel
+@{
+    ViewBag.Title = "Index";
+    int dayNumber = DateTime.Today.Day;
+}
+
+@if (Model != null)
+{
+    <h1>Calendrier de l'Avent pour @Model.Calendar.DisplayName</h1>
+    <div class="Calendar">
+        @for (int i = 1; i <= Model.GenericsPicturesNames.Count; i++)
+        {
+            string currentBox = "box" + i;
+            string currentPicture = "pict" + i;
+            <div class="BoxAndPicture">
+                <img id="@currentBox" class="box" src="@Model.GenericsPicturesNames[i]" alt="@(i)" onmouseover="ShowPicture_HideBox(@currentPicture, @currentBox);" />
+                @if (Model.PicturesNames.ContainsKey(i))
+                {
+                    <img id="@currentPicture" class="picture" src="@Model.PicturesNames[i]" alt="@(i)" onclick="Popup_ShowPictures_HideBox(this, @currentBox);" />
+                }
+                else
+                {
+                    <img class="boxReplacingPicture" src="@Model.GenericsPicturesNames[i]" alt="@(i)" />
+                }
+            </div>
+        }
+    </div>
+}
+
+<div id="popupPicture" class="popup" ontouchstart="TouchStart()" ontouchmove="TouchMove()" ontouchend="TouchEnd()" onmousemove="ShowButtonsCursor()">
+    <div id="largeImageAndButtons">
+        <img id="imagePopup" class="popup-content">
+        <div id="caption"></div>
+        <div id="previousButton"></div>
+        <div id="nextButton"></div>
+        <div id="previousArea"></div>
+        <div id="nextArea"></div>
+        <div id="closeButton" class="close"></div>
+        <div id="maxScreenButton" class="screenButton"></div>
+        <div id="defaultScreenButton" class="screenButton"></div>
+    </div>
+</div>

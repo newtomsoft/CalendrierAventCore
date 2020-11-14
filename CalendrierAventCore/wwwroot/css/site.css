@@ -1,0 +1,231 @@
+﻿body {
+}
+
+.body-content {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 0 auto;
+}
+
+    .body-content h1, h2, h3, h4, p {
+        text-align: center;
+    }
+
+.Calendar {
+    max-width: 1300px;
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+    margin: 0 auto;
+}
+
+.BoxAndPicture {
+    align-self: center;
+    width: 14%;
+    height: 14%;
+    margin: 0.8%;
+}
+
+    .BoxAndPicture img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding: 0.5%;
+    left: 0px;
+    top: 0px;
+    width: 99%;
+    height: 99%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.9);
+}
+
+.popup-content {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    display: block;
+}
+
+#largeImageAndButtons {
+    display: flex;
+    position: relative;
+    margin: auto;
+    height: 94%;
+    width: 100%;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#caption {
+    position: fixed;
+    bottom: 3.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ccc;
+    font-size: larger;
+    transform: translateY(50%);
+}
+
+.popup-content {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.5s;
+    animation-name: zoom;
+    animation-duration: 0.5s;
+}
+
+@-webkit-keyframes zoom {
+    from {
+        -webkit-transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    color: #f1f1f1;
+    transition: 0.5s;
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+    background-image: url(/Content/Icones/White/Close.svg);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.screenButton {
+    position: absolute;
+    top: 20px;
+    color: #f1f1f1;
+    transition: 0.5s;
+    background-size: cover;
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#maxScreenButton {
+    background-image: url(/Content/Icones/White/FullScreen.svg);
+}
+
+#defaultScreenButton {
+    display: none;
+    background-image: url(/Content/Icones/White/DefaultScreen.svg);
+}
+
+#previousButton {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    color: #f1f1f1;
+    transition: 0.5s;
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+    background-image: url(/Content/Icones/White/LeftArrow.svg);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+    #previousButton.hover, #nextButton.hover {
+        cursor: pointer;
+        background-color: #808080;
+    }
+
+
+#previousArea {
+    position: absolute;
+    z-index: 4;
+    top: 30%;
+    left: 0px;
+    width: 20%;
+    height: 40%;
+    border-radius: 50%;
+}
+
+#nextButton {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    color: #f1f1f1;
+    transition: 0.5s;
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+    background-image: url(/Content/Icones/White/RightArrow.svg);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#nextArea {
+    position: absolute;
+    z-index: 4;
+    top: 30%;
+    right: 0px;
+    width: 20%;
+    height: 40%;
+    border-radius: 50%;
+}
+
+.close, #previousButton {
+    left: 1.5%;
+    /*animation-duration: 0.5s;*/
+}
+
+.screenButton, #nextButton {
+    right: 1.5%;
+    /*animation-duration: 0.5s;*/
+}
+
+#previousArea:hover, #previousArea:focus, #nextArea:hover, #nextArea:focus {
+    cursor: pointer;
+}
+
+.close:hover, .close:focus, #maxScreenButton:hover, #maxScreenButton:focus, #defaultScreenButton:hover, #defaultScreenButton:focus {
+    cursor: pointer;
+    background-color: #808080;
+}
+
+@media only screen and (max-width: 700px) {
+    .popup-content {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .BoxAndPicture {
+        width: 23.7%;
+        height: 23.7%;
+        margin: 0.4%;
+    }
+}

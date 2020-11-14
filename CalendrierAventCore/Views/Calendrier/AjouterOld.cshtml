@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Ajouter un calendrier";
+}
+
+<h2>Ajouter un calendrier de l'Avent</h2>
+@using (Html.BeginForm((string)ViewContext.RouteData.Values["action"], (string)ViewContext.RouteData.Values["controller"], new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+{
+<p><input name="name" type="text" title="Nom de la personne à qui offir le calendrier" placeholder="Nom de la personne à qui offir le calendrier" maxlength='20' size="40" required></p>
+<p><input name="email" type="email" title="Votre adresse email" placeholder="Votre adresse email" maxlength='30' size="40"></p>
+<p><input type="submit" value="Créer le calendrier"></p>
+
+}

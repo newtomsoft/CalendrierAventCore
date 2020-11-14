@@ -1,0 +1,26 @@
+
+création models à partir de la base de donnée:
+dotnet ef dbcontext scaffold "chaine de connexion" Microsoft.EntityFrameworkCore.SqlServer --table NomDeLaTable --context-dir Data --output-dir Models
+
+
+
+Création / migrations  de tables : Projet Data
+Si pas déjà installé :
+dotnet tool install --global dotnet-ef
+maj :
+dotnet tool update --global dotnet-ef
+
+Nuget :
+Microsoft.Extensions.Configuration.Json
+Microsoft.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.Design
+
+commandes :
+dotnet ef migrations add MaMigration
+dotnet ef database update
+
+
+
+https:
+dotnet dev-certs https --trust
