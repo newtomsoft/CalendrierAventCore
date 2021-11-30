@@ -2,17 +2,17 @@
 @model CalendarViewModel
 @{
     ViewBag.Title = "Index";
-    int dayNumber = DateTime.Today.Day;
+    var dayNumber = DateTime.Today.Day;
 }
 
 @if (Model != null)
 {
     <h1>Calendrier de l'Avent pour @Model.Calendar.DisplayName</h1>
     <div class="Calendar">
-        @for (int i = 1; i <= Model.GenericsPicturesNames.Count; i++)
+        @for (var i = 1; i <= Model.GenericsPicturesNames.Count; i++)
         {
-            string currentBox = "box" + i;
-            string currentPicture = "pict" + i;
+            var currentBox = "box" + i;
+            var currentPicture = "pict" + i;
             <div class="BoxAndPicture">
                 <img id="@currentBox" class="box" src="@Model.GenericsPicturesNames[i]" alt="@(i)" onmouseover="ShowPicture_HideBox(@currentPicture, @currentBox);" />
                 @if (Model.PicturesNames.ContainsKey(i))

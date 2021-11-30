@@ -1,8 +1,8 @@
 ﻿@model CalendrierAventCore.Data.ViewModels.CalendarViewModel
 @{
     ViewBag.Title = "Index";
-    string publicUrl = $"/{Model.Calendar.PublicName}";
-    string privateUrl = $"/{Model.Calendar.PrivateName}";
+    var publicUrl = $"/{Model.Calendar.PublicName}";
+    var privateUrl = $"/{Model.Calendar.PrivateName}";
 }
 
 <h1>Calendrier de l'Avent de @Model.Calendar.DisplayName</h1>
@@ -12,10 +12,10 @@
 
 
 <div class="Calendar">
-    @for (int i = 1; i <= Model.GenericsPicturesNames.Count; i++)
+    @for (var i = 1; i <= Model.GenericsPicturesNames.Count; i++)
     {
-        string currentPicture = "Picture" + i;
-        string inputId = "input" + i;
+        var currentPicture = "Picture" + i;
+        var inputId = "input" + i;
         using (Html.BeginForm("Modifier", "Calendrier", FormMethod.Post, new { enctype = "multipart/form-data", @class = "BoxAndPicture" }))
         {
             <input name="privateName" type="hidden" value="@Model.Calendar.PrivateName">
@@ -27,7 +27,7 @@
                 }
                 else
                 {
-                    <img id="@currentPicture" src="@Model.GenericsPicturesNames[i]" alt="@(i)">
+                    <img id="@currentPicture" src="@Model.GenericsPicturesNames[i]" alt="photo @(i)">
                 }
             </label>
             <input id="@inputId" hidden="hidden" onchange="changePicture(this, '#@currentPicture'); this.form.submit();" name="file" type="file" accept="image/*" maxlength='100'>

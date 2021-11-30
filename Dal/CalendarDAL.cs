@@ -1,96 +1,65 @@
-﻿using CalendrierAventCore.Data;
-using CalendrierAventCore.Data.Models;
-using CalendrierAventCore.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CalendrierAventCore.Data;
+using CalendrierAventCore.Data.Models;
+using Data.Config;
+using Microsoft.Extensions.Options;
 
-namespace CalendrierAventCore.DAL
+namespace Dal;
+
+public class CalendarDal
 {
-    public static class CalendarDAL
+    private readonly IOptions<MyConfig> _config;
+
+    public CalendarDal(IOptions<MyConfig> config)
     {
-        public static Calendar Details(int id)
-        {
-            using DefaultContext db = new DefaultContext();
-            return (from c in db.Calendars
-                    where c.Id == id
-                    select c).FirstOrDefault();
-        }
+        _config = config;
+    }
 
-        public static Calendar DetailsByPublicName(string publicName)
-        {
-            using DefaultContext db = new DefaultContext();
-            return (from c in db.Calendars
-                    where c.PublicName == publicName
-                    select c).FirstOrDefault();
-        }
+    public Calendar Details(int id)
+    {
+        using DefaultDbContext db = new();
+        return (from c in db.Calendars
+                where c.Id == id
+                select c).FirstOrDefault();
+    }
 
-        public static Calendar DetailsByPrivateName(string privateName)
-        {
-            using DefaultContext db = new DefaultContext();
-            return (from c in db.Calendars
-                    where c.PrivateName == privateName
-                    select c).FirstOrDefault();
-        }
+    public Calendar DetailsByPublicName(string publicName)
+    {
+        using DefaultDbContext db = new();
+        return (from c in db.Calendars
+                where c.PublicName == publicName
+                select c).FirstOrDefault();
+    }
 
-        public static List<Calendar> List()
-        {
-            using DefaultContext db = new DefaultContext();
-            return (from c in db.Calendars
-                    select c).ToList();
-        }
+    public Calendar DetailsByPrivateName(string privateName)
+    {
+        using DefaultDbContext db = new();
+        return (from c in db.Calendars
+                where c.PrivateName == privateName
+                select c).FirstOrDefault();
+    }
 
-        public static Dictionary<int, string> PicturesList(int id, DateTime date)
-        {
-            if (date.Month == 12)
-                return PictureDAL.Dictionary(Details(id).Id, date.Day);
-            else
-                return new Dictionary<int, string>();
-        }
+    public List<Calendar> List()
+    {
+        using DefaultDbContext db = new();
+        return (from c in db.Calendars
+                select c).ToList();
+    }
 
-        public static Dictionary<int, string> Dictionary(int id, DateTime? date = null)
-        {
-            DateTime dateOk = date ?? DateTime.MaxValue;
-            if (dateOk == DateTime.MaxValue)
-            {
-                return PictureDAL.Dictionary(id);
-            }
-            else if (dateOk.Month == 12)
-            {
-                return PictureDAL.Dictionary(id, dateOk.Day);
-            }
-            else
-            {
-                return new Dictionary<int, string>();
-            }
-        }
-
-        public static Calendar Add(string name)
-        {
-            name = name.Replace("-", "");
-            string randomPublicSuffix = "-" + Tool.RandomAsciiPrintable(6);
-            string randomPrivateSuffix = "-" + Tool.RandomAsciiPrintable(10);
-            Calendar calendar = new Calendar()
-            {
-                DisplayName = name,
-                PublicName = name + randomPublicSuffix,
-                PrivateName = name + randomPrivateSuffix,
-                BoxId = 1 //TODO
-            };
-            using (DefaultContext db = new DefaultContext())
-            {
-                db.Calendars.Add(calendar);
-                db.SaveChanges();
-            }
-
-            return calendar;
-        }
-
-        public static void Add(Calendar calendar)
-        {
-            using DefaultContext db = new DefaultContext();
-            db.Calendars.Add(calendar);
-            db.SaveChanges();
-        }
+    public Dictionary<int, string> Dictionary(int id, DateTime? date = null)
+    {
+        var dateOk = date ?? DateTime.MaxValue;
+        if (dateOk == DateTime.MaxValue) return new PictureDal(_config).Dictionary(id);
+        return dateOk.Month == 12 ? new PictureDal(_config).Dictionary(id, dateOk.Day) : new Dictionary<int, string>();
+    }
+   
+    public void Add(Calendar calendar)
+    {
+        calendar.BoxId = 1; //TODO
+        using DefaultDbContext db = new();
+        db.Calendars.Add(calendar);
+        db.SaveChanges();
     }
 }

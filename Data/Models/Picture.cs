@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CalendrierAventCore.Data.Models
 {
     [Table("Picture")]
-    public partial class Picture
+    public class Picture
     {
         [Key]
         public int Id { get; set; }

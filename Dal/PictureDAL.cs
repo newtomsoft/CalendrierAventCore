@@ -1,59 +1,59 @@
-﻿using CalendrierAventCore.Data;
-using CalendrierAventCore.Data.Models;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CalendrierAventCore.Data;
+using CalendrierAventCore.Data.Models;
+using Data.Config;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.Extensions.Options;
 
-namespace CalendrierAventCore.DAL
+namespace Dal;
+
+public class PictureDal
 {
-    public static class PictureDAL
+    private readonly IOptions<MyConfig> _config;
+
+    public PictureDal(IOptions<MyConfig> config)
     {
-        public static Picture Details(int calendarId, int dayNumber)
+        _config = config;
+    }
+
+    public Dictionary<int, string> Dictionary(int calendarId, int dayNumber = 31)
+    {
+        string calendarPath = new CalendarDal(_config).Details(calendarId).PublicName;
+        var openPicturePath = Path.Combine(Path.DirectorySeparatorChar.ToString(), _config.Value.PicturePath, calendarPath);
+        //var openPicturePath = Path.Combine(Path.DirectorySeparatorChar.ToString(), _config.Value.PicturePath, calendarPath);
+
+        using DefaultDbContext db = new DefaultDbContext();
+        return (from p in db.Pictures
+            join c in db.Calendars on p.CalendarId equals c.Id
+            where p.CalendarId == calendarId && p.DayNumber <= dayNumber
+            select p).ToDictionary(x => x.DayNumber, x => Path.Combine(openPicturePath, x.Name));
+    }
+
+    public void Add(int calendarId, int dayNumber, string name)
+    {
+        using DefaultDbContext db = new DefaultDbContext();
+        var picture = (from p in db.Pictures
+            join c in db.Calendars on p.CalendarId equals c.Id
+            where p.CalendarId == calendarId && p.DayNumber == dayNumber
+            select p).FirstOrDefault();
+
+        if (picture == null)
         {
-            using DefaultContext db = new DefaultContext();
-            return (from p in db.Pictures
-                    join c in db.Calendars on p.CalendarId equals c.Id
-                    where p.CalendarId == calendarId && p.DayNumber == dayNumber
-                    select p).FirstOrDefault();
-        }
-
-        public static Dictionary<int, string> Dictionary(int calendarId, int dayNumber = 31)
-        {
-            string calendarPath = CalendarDAL.Details(calendarId).PublicName;
-            string openPicturePath = Path.Combine("/Content/Photos/", calendarPath);
-            //TODO path
-            //string openPicturePath = Path.Combine(ConfigurationManager.AppSettings["PicturePath"], calendarPath);
-
-            using DefaultContext db = new DefaultContext();
-            return (from p in db.Pictures
-                    join c in db.Calendars on p.CalendarId equals c.Id
-                    where p.CalendarId == calendarId && p.DayNumber <= dayNumber
-                    select p).ToDictionary(x => x.DayNumber, x => Path.Combine(openPicturePath, x.Name));
-        }
-
-        public static void Add(int calendarId, int dayNumber, string name)
-        {
-            using DefaultContext db = new DefaultContext();
-            Picture picture = (from p in db.Pictures
-                               join c in db.Calendars on p.CalendarId equals c.Id
-                               where p.CalendarId == calendarId && p.DayNumber == dayNumber
-                               select p).FirstOrDefault();
-
-            if (picture == null)
+            picture = new Picture()
             {
-                picture = new Picture()
-                {
-                    CalendarId = calendarId,
-                    DayNumber = dayNumber,
-                    Name = name,
-                };
-                db.Pictures.Add(picture);
-            }
-            else
-            {
-                picture.Name = name;
-            }
-            db.SaveChanges();
+                CalendarId = calendarId,
+                DayNumber = dayNumber,
+                Name = name,
+            };
+            db.Pictures.Add(picture);
         }
+        else
+        {
+            picture.Name = name;
+        }
+        db.SaveChanges();
     }
 }

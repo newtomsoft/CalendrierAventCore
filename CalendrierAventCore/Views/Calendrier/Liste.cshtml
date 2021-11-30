@@ -17,10 +17,10 @@
 
 @if (Model != null)
 {
-    foreach (Calendar calendar in Model)
+    foreach (var calendar in Model)
     {
-        string privateUrl = $"/{calendar.PrivateName}";
-        string publicUrl = $"/{calendar.PublicName}";
+        var privateUrl = $"/{calendar.PrivateName}";
+        var publicUrl = $"/{calendar.PublicName}";
         <p>@calendar.Id - lien privé : <a href="@privateUrl" target="_blank">@calendar.PrivateName</a> - lien public : <a href="@publicUrl" target="_blank">@calendar.PublicName</a></p>
 
     }

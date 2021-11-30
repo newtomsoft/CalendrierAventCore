@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CalendrierAventCore.Data.Models
 {
     [Table("Calendar")]
-    public partial class Calendar : IValidatableObject
+    public class Calendar : IValidatableObject
     {
         [Key]
         public int Id { get; set; }
